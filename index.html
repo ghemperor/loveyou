@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Cậu, Người Tớ Thương</title>
+    
+    <!-- Google Fonts - Font chữ viết tay và bo tròn -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- Bảng màu và Font chữ đáng yêu --- */
+        :root {
+            --body-font: 'Nunito', sans-serif;
+            --heading-font: 'Pacifico', cursive; /* Font viết tay */
+            --primary-color: #6d5d6e; /* Màu chữ chính (Tím đậm) */
+            --accent-color: #ff8fab; /* Màu nhấn (Hồng ngọt) */
+            --bg-color: #fcf5f7; /* Màu nền (Hồng rất nhạt) */
+            --card-bg: #ffffff;
+            --footer-bg: #4f4557;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--body-font);
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            text-align: center;
+            overflow-x: hidden;
+            /* Họa tiết trái tim nhỏ làm nền */
+            background-image: radial-gradient(var(--accent-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: -19px -19px;
+        }
+
+        /* --- Thanh Điều Hướng (Navbar) --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: transparent;
+            padding: 15px 30px;
+            z-index: 1000;
+            transition: all 0.4s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 10px 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 700;
+            transition: color 0.3s ease;
+            font-size: 1.1rem;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .navbar.scrolled .nav-links a {
+            color: var(--primary-color);
+            text-shadow: none;
+        }
+        
+        .navbar.scrolled .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- Phần Hero (Trang chủ) --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 20px;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('images/hero-background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero h1 {
+            font-family: var(--heading-font);
+            font-size: clamp(3rem, 10vw, 6rem);
+            margin: 0;
+            text-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            max-width: 550px;
+            margin-top: 20px;
+            font-weight: 700;
+            line-height: 1.6;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+
+        /* --- Section chung --- */
+        .section {
+            padding: 80px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            background-color: var(--bg-color); /* Nền section che đi họa tiết body */
+        }
+        
+        .section-title {
+            font-family: var(--heading-font);
+            font-size: 3rem;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+            color: var(--accent-color);
+        }
+
+        /* --- Mục Lý do --- */
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            text-align: left;
+        }
+
+        .reason-card {
+            background: var(--card-bg);
+            border-radius: 20px; /* Bo góc nhiều hơn */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .reason-card:hover {
+            transform: translateY(-10px) rotate(1deg);
+        }
+
+        .reason-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        
+        .reason-content {
+            padding: 25px;
+        }
+
+        .reason-content h3 {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        .reason-content h3 i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        /* --- Dòng thời gian --- */
+        .timeline-container {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            /* Đường kẻ nét đứt */
+            background-image: linear-gradient(var(--accent-color) 60%, rgba(255,255,255,0) 0%);
+            background-position: right;
+            background-size: 3px 20px;
+            background-repeat: repeat-y;
+            transform: translateX(-50%);
+        }
+
+        .timeline-block {
+            position: relative;
+            width: 50%;
+            padding: 0 50px;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+
+        .timeline-block:nth-child(odd) { float: left; text-align: right; clear: both; }
+        .timeline-block:nth-child(even) { float: right; text-align: left; clear: both; }
+
+        .timeline-marker {
+            position: absolute;
+            top: 20px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: var(--bg-color);
+            border: 3px solid var(--accent-color);
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--accent-color);
+        }
+
+        .timeline-block:nth-child(odd) .timeline-marker { right: -12.5px; }
+        .timeline-block:nth-child(even) .timeline-marker { left: -12.5px; }
+
+        .timeline-content {
+            background: var(--card-bg);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .timeline-content h3 {
+            font-weight: 700;
+            margin-top: 0;
+            font-size: 1.4rem;
+        }
+        .clearfix::after { content: ""; display: table; clear: both; }
+
+        /* --- Thư viện ảnh --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .gallery-item img:hover {
+            transform: scale(1.05) rotate(-2deg);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        /* --- Modal Phóng to ảnh --- */
+        .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+        .modal-content { max-width: 90%; max-height: 85%; animation: zoom 0.4s; }
+        @keyframes zoom { from {transform: scale(0)} to {transform: scale(1)} }
+        .close { position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; transition: 0.3s; cursor: pointer; }
+
+        /* --- Footer (Lời hứa) --- */
+        .footer {
+            background-color: var(--footer-bg);
+            color: #f7d9e4;
+            padding: 80px 20px;
+        }
+        .footer .section-title { color: white; }
+        .footer p { max-width: 600px; margin: 30px auto; font-size: 1.1rem; line-height: 1.7; }
+        .cta-button { display: inline-block; background-color: var(--accent-color); color: white; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: bold; transition: all 0.3s; box-shadow: 0 4px 15px rgba(255, 143, 171, 0.4); }
+        .cta-button:hover { background-color: #ff6b99; transform: translateY(-3px) scale(1.05); }
+
+        /* --- Hiệu ứng cuộn trang --- */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .nav-links a { margin: 0 10px; font-size: 0.9rem; }
+            .timeline-container::before { left: 15px; }
+            .timeline-block { width: 100%; padding-left: 50px; padding-right: 15px; }
+            .timeline-block:nth-child(odd), .timeline-block:nth-child(even) { float: none; text-align: left; }
+            .timeline-marker { left: 3px; }
+            .timeline-block:nth-child(odd) .timeline-marker, .timeline-block:nth-child(even) .timeline-marker { left: 3px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="#reasons">Lý Do Thương</a>
+            <a href="#journey">Chuyện Đôi Ta</a>
+            <a href="#gallery">Khoảnh Khắc</a>
+            <a href="#promise">Lời Hứa</a>
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <h1>[Tên người ấy] ơi...</h1>
+        <p>[Viết lời mở đầu thật ngọt ngào. Ví dụ: Có những điều tớ không biết nói sao cho hết... nên tớ đã gom hết vào đây, một góc nhỏ chứa đầy những vụn vặt đáng yêu của chúng mình.]</p>
+    </header>
+
+    <main>
+        <section id="reasons" class="section">
+            <h2 class="section-title fade-in">Vì sao tớ thương cậu</h2>
+            <div class="reasons-grid">
+                <div class="reason-card fade-in">
+                    <img src="images/reason-1.jpg" alt="Ảnh minh họa cho lý do 1">
+                    <div class="reason-content">
+                        <h3><i class="fa-solid fa-sun"></i> [Tiêu đề lý do 1]</h3>
+                        <p>[Mô tả chi tiết. Ví dụ: Vì nụ cười của cậu như nắng mai, làm bừng sáng cả một ngày u ám nhất của tớ.]</p>
+                    </div>
+                </div>
+                <div class="reason-card fade-in">
+                    <img src="images/reason-2.jpg" alt="Ảnh minh họa cho lý do 2">
+                    <div class="reason-content">
+                        <h3><i class="fa-solid fa-cookie-bite"></i> [Tiêu đề lý do 2]</h3>
+                        <p>[Mô tả chi tiết. Ví dụ: Vì sự quan tâm vụng về nhưng ngọt ngào của cậu, giống như miếng bánh ngon nhất trên đời.]</p>
+                    </div>
+                </div>
+                <div class="reason-card fade-in">
+                    <img src="images/reason-3.jpg" alt="Ảnh minh họa cho lý do 3">
+                    <div class="reason-content">
+                        <h3><i class="fa-solid fa-shield-heart"></i> [Tiêu đề lý do 3]</h3>
+                        <p>[Mô tả chi tiết. Ví dụ: Vì ở bên cậu, tớ được là chính tớ, một phiên bản không cần gồng mình, không cần hoàn hảo.]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="journey" class="section" style="background-color: #fff;">
+            <h2 class="section-title fade-in">Cuốn phim của chúng mình</h2>
+            <div class="timeline-container clearfix">
+                <div class="timeline-block fade-in">
+                    <div class="timeline-marker"><i class="fa-solid fa-heart"></i></div>
+                    <div class="timeline-content">
+                        <h3>[Ngày tháng năm]</h3>
+                        <p>[Sự kiện. Ví dụ: Ngày hôm ấy, tớ đã "lỡ" va phải ánh mắt của cậu.]</p>
+                    </div>
+                </div>
+                <div class="timeline-block fade-in">
+                    <div class="timeline-marker"><i class="fa-solid fa-heart"></i></div>
+                    <div class="timeline-content">
+                        <h3>[Ngày tháng năm]</h3>
+                        <p>[Sự kiện. Ví dụ: Chuyến đi ngẫu hứng đầu tiên, và những tiếng cười không dứt.]</p>
+                    </div>
+                </div>
+                <div class="timeline-block fade-in">
+                    <div class="timeline-marker"><i class="fa-solid fa-heart"></i></div>
+                    <div class="timeline-content">
+                        <h3>[Ngày tháng năm]</h3>
+                        <p>[Sự kiện. Ví dụ: Một tối mưa, chúng mình cùng nhau xem một bộ phim cũ rích.]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="gallery" class="section">
+            <h2 class="section-title fade-in">Góc nhỏ kỷ niệm</h2>
+            <p class="fade-in">Mỗi tấm hình là một "cục cưng" tớ không muốn giấu đi.</p>
+            <div class="gallery-grid">
+                <div class="gallery-item fade-in"><img src="images/gallery-1.jpg" alt="Kỷ niệm 1"></div>
+                <div class="gallery-item fade-in"><img src="images/gallery-2.jpg" alt="Kỷ niệm 2"></div>
+                <div class="gallery-item fade-in"><img src="images/gallery-3.jpg" alt="Kỷ niệm 3"></div>
+                <div class="gallery-item fade-in"><img src="images/gallery-4.jpg" alt="Kỷ niệm 4"></div>
+                <div class="gallery-item fade-in"><img src="images/gallery-5.jpg" alt="Kỷ niệm 5"></div>
+                <div class="gallery-item fade-in"><img src="images/gallery-6.jpg" alt="Kỷ niệm 6">
+                <div class="gallery-item fade-in"><img src="images/gallery-7.jpg" alt="Kỷ niệm 7"></div>
+                <div class="gallery-item fade-in"><img src="images/gallery-8.jpg" alt="Kỷ niệm 8"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="promise" class="footer">
+        <h2 class="section-title fade-in">Tớ hứa...</h2>
+        <p class="fade-in">[Viết lời hứa chân thành. Ví dụ: Tớ xin lỗi vì đã làm cậu buồn. Tớ hứa sẽ học cách lắng nghe trái tim cậu nhiều hơn, sẽ không để những hiểu lầm ngốc nghếch chen vào giữa chúng mình nữa. Cho tớ một cơ hội, nhé? ]</p>
+        <a href="[Link-Facebook-Messenger-của-bạn]" class="cta-button fade-in">Nhắn cho tớ nha <i class="fa-solid fa-paper-plane"></i></a>
+    </footer>
+
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        // --- Navbar Scroll Effect ---
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // --- Image Gallery Modal ---
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const galleryImages = document.querySelectorAll('.gallery-item img');
+        const closeModal = document.querySelector('.close');
+
+        galleryImages.forEach(img => {
+            img.addEventListener('click', () => {
+                modal.style.display = "flex";
+                modalImg.src = img.src;
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = "none";
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+
+        // --- Fade-in on Scroll Effect ---
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+        });
+    </script>
+</body>
+</html>
